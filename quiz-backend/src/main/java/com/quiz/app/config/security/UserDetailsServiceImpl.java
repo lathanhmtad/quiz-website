@@ -1,6 +1,6 @@
 package com.quiz.app.config.security;
 
-import com.quiz.app.entity.Participant;
+import com.quiz.app.entity.auth.Participant;
 import com.quiz.app.exception.AccountBlockedException;
 import com.quiz.app.repository.ParticipantRepo;
 import lombok.AllArgsConstructor;

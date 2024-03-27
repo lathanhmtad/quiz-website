@@ -1,20 +1,16 @@
 package com.quiz.app.dto.participant;
 
+import com.quiz.app.dto.BaseResponse;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
-public class ParticipantResponse {
-    private Long id;
-    private Date createdDate;
-    private Date updatedDate;
+public class ParticipantResponse extends BaseResponse {
     private String username;
-    private String email;
     private String fullName;
-    private String role;
+    private String email;
     private String avatar;
+    private String role;
     private Boolean enabled;
 }

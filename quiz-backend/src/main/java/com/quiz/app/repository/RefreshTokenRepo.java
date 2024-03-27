@@ -1,6 +1,6 @@
 package com.quiz.app.repository;
 
-import com.quiz.app.entity.RefreshToken;
+import com.quiz.app.entity.auth.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

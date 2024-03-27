@@ -1,6 +1,6 @@
 package com.quiz.app.config.security;
 
-import com.quiz.app.entity.RefreshToken;
+import com.quiz.app.entity.auth.RefreshToken;
 import com.quiz.app.exception.RefreshTokenException;
 import com.quiz.app.exception.ResourceNotFoundException;
 import com.quiz.app.repository.ParticipantRepo;
@@ -34,7 +34,6 @@ public class RefreshTokenProvider {
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
         Date currentDate = new Date();
         if(refreshToken.getExpiryDate().compareTo(currentDate) < 0) {
-            refreshTokenRepository.delete(refreshToken);
             throw new RefreshTokenException("Refresh token was expired. Please make a new login request!");
         }
         return refreshToken;

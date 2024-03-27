@@ -1,6 +1,5 @@
 package com.quiz.app.config.security;
 
-import com.quiz.app.constants.PublicApiConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Slf4j
-public class JwtAuthenticationFilter  extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -32,7 +31,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         try {
             String jwt = this.getTokenFromRequest(request);
 
-            if(jwt != null && jwtTokenProvider.validateJwtToken(jwt)) {
+            if (jwt != null && jwtTokenProvider.validateJwtToken(jwt)) {
                 String username = jwtTokenProvider.getUsername(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -52,14 +51,9 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().startsWith(PublicApiConstants.AUTH_API_PATH);
-    }
-
-    private String getTokenFromRequest(HttpServletRequest request){
+    private String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;

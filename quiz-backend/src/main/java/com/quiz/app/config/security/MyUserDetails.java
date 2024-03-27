@@ -1,6 +1,6 @@
 package com.quiz.app.config.security;
 
-import com.quiz.app.entity.Participant;
+import com.quiz.app.entity.auth.Participant;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +29,7 @@ public class MyUserDetails extends User {
     }
 
     public static UserDetails build(Participant participant) {
-        String role = participant.getRole();
+        String role = participant.getRole().toString();
         List<GrantedAuthority> authorities = List.of(
                 new SimpleGrantedAuthority(role)
         );

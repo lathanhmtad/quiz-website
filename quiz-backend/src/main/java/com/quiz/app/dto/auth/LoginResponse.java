@@ -14,5 +14,5 @@ public class LoginResponse {
     private String accessToken;
     private String refreshToken;
     private Date createdDate;
-    private final String tokenType = "Bearer";
+    private final String tokenType = "Bearer ";
 }

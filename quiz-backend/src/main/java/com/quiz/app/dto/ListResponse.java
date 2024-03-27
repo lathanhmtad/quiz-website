@@ -9,17 +9,17 @@ import java.util.List;
 @Getter
 @Setter
 public class ListResponse<T> {
-    List<T> content;
-    int pageNumber;
-    int size;
-    long totalElements;
-    int totalPages;
-    boolean last;
+    private List<T> content;
+    private int pageNumber;
+    private int pageSize;
+    private long totalElements;
+    private int totalPages;
+    private boolean last;
 
     public <E> ListResponse(List<T> content, Page<E> page) {
         this.content = content;
         this.pageNumber = page.getNumber() + 1;
-        this.size = page.getSize();
+        this.pageSize = page.getSize();
         this.totalElements = page.getTotalElements();
         this.totalPages = page.getTotalPages();
         this.last = page.isLast();

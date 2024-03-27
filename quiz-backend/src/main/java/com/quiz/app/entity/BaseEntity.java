@@ -1,13 +1,10 @@
 package com.quiz.app.entity;
 
-import com.quiz.app.config.security.MyUserDetails;
+import com.quiz.app.utils.SecurityUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Date;
 
@@ -20,27 +17,23 @@ public class BaseEntity {
     private Long id;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     private Date createdDate;
 
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     private Long createdBy;
 
     private Date updatedDate;
-
     private Long updatedBy;
 
     @PrePersist
     public void onPersist() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        this.setCreatedBy(userDetails.getId());
+        this.setCreatedBy(SecurityUtils.getCurrentUserDetails().getId());
     }
 
     @PreUpdate
     public void onUpdate() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        this.setUpdatedBy(userDetails.getId());
+        this.setUpdatedDate(new Date());
+        this.setUpdatedBy(SecurityUtils.getCurrentUserDetails().getId());
     }
 }

@@ -3,26 +3,22 @@ package com.quiz.app.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quiz.app.constants.ResourceName;
 import com.quiz.app.constants.SearchFields;
+import com.quiz.app.dto.answer.AnswerRequest;
+import com.quiz.app.dto.answer.AnswerResponse;
 import com.quiz.app.dto.category.CategoryRequest;
 import com.quiz.app.dto.category.CategoryResponse;
 import com.quiz.app.dto.participant.ParticipantRequest;
 import com.quiz.app.dto.participant.ParticipantResponse;
-import com.quiz.app.dto.question.QuizQuestionRequest;
-import com.quiz.app.dto.question.QuizQuestionResponse;
+import com.quiz.app.dto.question.QuestionResponse;
 import com.quiz.app.dto.quiz.QuizRequest;
 import com.quiz.app.dto.quiz.QuizResponse;
-import com.quiz.app.entity.Category;
-import com.quiz.app.entity.Participant;
-import com.quiz.app.entity.Quiz;
-import com.quiz.app.entity.QuizQuestion;
-import com.quiz.app.mapper.CategoryMapper;
-import com.quiz.app.mapper.ParticipantMapper;
-import com.quiz.app.mapper.QuizMapper;
-import com.quiz.app.mapper.QuizQuestionMapper;
-import com.quiz.app.repository.CategoryRepo;
-import com.quiz.app.repository.ParticipantRepo;
-import com.quiz.app.repository.QuizQuestionRepo;
-import com.quiz.app.repository.QuizRepo;
+import com.quiz.app.entity.auth.Participant;
+import com.quiz.app.entity.quiz.Answer;
+import com.quiz.app.entity.quiz.Category;
+import com.quiz.app.entity.quiz.Question;
+import com.quiz.app.entity.quiz.Quiz;
+import com.quiz.app.mapper.*;
+import com.quiz.app.repository.*;
 import com.quiz.app.service.CrudService;
 import com.quiz.app.service.GenericService;
 import jakarta.annotation.PostConstruct;
@@ -47,20 +43,22 @@ public class GenericMappingRegister {
     private GenericController<ParticipantRequest, ParticipantResponse> participantController;
     private GenericController<CategoryRequest, CategoryResponse> categoryController;
     private GenericController<QuizRequest, QuizResponse> quizController;
-    private GenericController<QuizQuestionRequest, QuizQuestionResponse> quizQuestionController;
+    private GenericController<QuestionResponse, QuestionResponse> questionController;
+    private GenericController<AnswerRequest, AnswerResponse> answerController;
 
     // services
     private GenericService<Participant, ParticipantRequest, ParticipantResponse> participantService;
     private GenericService<Category, CategoryRequest, CategoryResponse> categoryService;
     private GenericService<Quiz, QuizRequest, QuizResponse> quizService;
-    private GenericService<QuizQuestion, QuizQuestionRequest, QuizQuestionResponse> quizQuestionService;
+    private GenericService<Question, QuestionResponse, QuestionResponse> questionService;
+    private GenericService<Answer, AnswerRequest, AnswerResponse> answerService;
 
     @PostConstruct
     public void registerControllers() throws NoSuchMethodException {
 
         register("participants", participantController, participantService.init(
-            context.getBean(ParticipantRepo.class),
-            context.getBean(ParticipantMapper.class),
+                context.getBean(ParticipantRepo.class),
+                context.getBean(ParticipantMapper.class),
                 SearchFields.PARTICIPANT,
                 ResourceName.PARTICIPANT
         ), ParticipantRequest.class);
@@ -79,12 +77,19 @@ public class GenericMappingRegister {
                 ResourceName.QUIZ
         ), QuizRequest.class);
 
-        register("quiz-questions", quizQuestionController, quizQuestionService.init(
-                context.getBean(QuizQuestionRepo.class),
-                context.getBean(QuizQuestionMapper.class),
+        register("questions", questionController, questionService.init(
+                context.getBean(QuestionRepo.class),
+                context.getBean(QuestionMapper.class),
                 SearchFields.QUIZ_QUESTION,
                 ResourceName.QUIZ_QUESTION
-        ), QuizQuestionRequest.class);
+        ), QuestionResponse.class);
+
+        register("answers", answerController, answerService.init(
+                context.getBean(AnswerRepo.class),
+                context.getBean(AnswerMapper.class),
+                null,
+                null
+        ), AnswerRequest.class);
     }
 
     private <I, O> void register(
@@ -92,7 +97,7 @@ public class GenericMappingRegister {
             GenericController<I, O> controller,
             CrudService<Long, I, O> service,
             Class<I> requestType
-    )  throws NoSuchMethodException {
+    ) throws NoSuchMethodException {
         RequestMappingInfo.BuilderConfiguration options = new RequestMappingInfo.BuilderConfiguration();
         options.setPatternParser(new PathPatternParser());
 

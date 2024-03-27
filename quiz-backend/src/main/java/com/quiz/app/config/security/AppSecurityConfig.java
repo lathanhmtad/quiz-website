@@ -1,6 +1,7 @@
 package com.quiz.app.config.security;
 
-import com.quiz.app.constants.PublicApiConstants;
+import com.quiz.app.constants.AppConstants;
+import com.quiz.app.constants.ApiConstants;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,11 +67,10 @@ public class AppSecurityConfig {
         return (request, response, exception) -> exceptionResolver.resolveException(request, response, null, exception);
     }
 
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList(AppConstants.FRONTED_HOST));
         configuration.setAllowedMethods(Collections.singletonList("*"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         configuration.setMaxAge(3600L);
@@ -95,7 +95,7 @@ public class AppSecurityConfig {
                         .authenticationEntryPoint(authenticationEntryPoint())
                         .accessDeniedHandler(accessDeniedHandler()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(PublicApiConstants.AUTH_API_PATHS).permitAll()
+                        .requestMatchers(ApiConstants.PUBLIC_API_PATHS).permitAll()
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -8,5 +8,4 @@ import lombok.Setter;
 public class QuizRequest {
     private String name;
     private String description;
-
 }

@@ -10,8 +10,8 @@ import java.util.Date;
 @Setter
 @Builder
 public class ErrorResponse {
-    int statusCode;
-    Date timestamp;
-    String message;
-    String description;
+    private int statusCode;
+    private Date timestamp;
+    private String message;
+    private String description;
 }

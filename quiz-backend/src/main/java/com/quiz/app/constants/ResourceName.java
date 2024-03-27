@@ -4,5 +4,5 @@ public interface ResourceName {
     String PARTICIPANT = "Participant";
     String CATEGORY = "Category";
     String QUIZ = "Quiz";
-    String QUIZ_QUESTION = "Quiz question";
+    String QUIZ_QUESTION = "Question";
 }

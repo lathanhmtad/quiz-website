@@ -19,6 +19,7 @@ public interface SearchFields {
 
     );
 
-    List<String> QUIZ_QUESTION = List.of();
+    List<String> QUIZ_QUESTION = List.of(
+    );
 
 }

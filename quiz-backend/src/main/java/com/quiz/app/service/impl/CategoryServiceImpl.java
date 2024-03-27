@@ -2,7 +2,7 @@ package com.quiz.app.service.impl;
 
 import com.quiz.app.constants.ResourceName;
 import com.quiz.app.dto.category.CategoryTreeResponse;
-import com.quiz.app.entity.Category;
+import com.quiz.app.entity.quiz.Category;
 import com.quiz.app.exception.ResourceNotFoundException;
 import com.quiz.app.repository.CategoryRepo;
 import com.quiz.app.service.CategoryService;
